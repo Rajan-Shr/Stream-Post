@@ -86,32 +86,32 @@ StreamPost is a powerful Blog Content Management System (CMS) built using **ASP.
 
 **Signup Page**
 
-![Signup](./Signup.png "Signup")
+![Signup](./Screenshots/Signup.png "Signup")
 
 **Login Page**
 
-![Login](./Login.png "Login")
+![Login](./Screenshots/Login.png "Login")
 
 **Index Page**
 
-![Index](./Index.png "Index")
+![Index](./Screenshots/Index.png "Index")
 
 **Create Page**
 
-![Create](./Create.png "Create")
+![Create](./Screenshots/Create.png "Create")
 
 **Details**
 
-![Details](./Details.png "Details")
+![Details](./Screenshots/Details.png "Details")
 
 **Categories Page**
 
-![Categories](./Categories.png "Categories")
+![Categories](./Screenshots/Categories.png "Categories")
 
 **Search**
 
-![Search](./Search.png "Search")
+![Search](./Screenshots/Search.png "Search")
 
 **UserProfile Page**
 
-![UserProfile](./UserProfile.png "UserProfile")
+![UserProfile](./Screenshots/UserProfile.png "UserProfile")
