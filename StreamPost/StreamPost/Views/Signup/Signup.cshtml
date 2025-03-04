@@ -1,0 +1,174 @@
+﻿@model StreamPost.ViewModels.SignupViewModel
+@{
+    ViewData["Title"] = "Signup";
+    ViewData["ShowHeaderFooter"] = false;
+}
+<!-- Custom CSS for centering and smaller font -->
+<style>
+    section {
+        min-height: 90vh; /* Full screen height */
+    }
+
+    input.form-control-lg,
+    select.form-control-lg {
+        font-size: 0.85rem; /* Smaller font size */
+    }
+
+    ::placeholder {
+        font-size: 0.85rem; /* Smaller placeholder font size */
+        color: #6c757d; /* Placeholder color */
+    }
+</style>
+
+<section class="d-flex align-items-center justify-content-center p-4">
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <!-- Logo Section -->
+            <div class="col-lg-5 col-md-6 d-flex justify-content-center mb-4 mb-md-0">
+                <img src="~/images/StreamPost.png" class="img-fluid" style="max-width: 80%; height: auto;" />
+            </div>
+
+            <!-- Signup Form Section -->
+            <div class="col-lg-5 col-md-6 text-black">
+                <div class="d-flex flex-column align-items-center">
+                    <form asp-controller="Signup" asp-action="Signup" class="w-100 px-4" style="max-width: 500px;">
+                        @Html.AntiForgeryToken()
+                        <h3 class="fw-normal mb-4 text-center" style="letter-spacing: 1px;">Sign up</h3>
+
+                        <div class="row">
+                            <!-- Name -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="Username">Username</label>
+                                    <input type="text" asp-for="Username" class="form-control form-control-lg" placeholder="Enter your username" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="Email">Email address</label>
+                                    <input type="email" asp-for="Email" class="form-control form-control-lg" placeholder="Enter your email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Phone -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="PhoneNumber">Phone Number</label>
+                                    <input type="tel" asp-for="PhoneNumber" class="form-control form-control-lg" pattern="[0-9]{10}" placeholder="Enter your phone number" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="Gender">Gender</label>
+                                    <select asp-for="Gender" class="form-control form-control-lg">
+                                        <option value="" disabled selected>Select Gender</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                        <option value="O">Other</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Date of Birth -->
+                            <div class="col-md-12 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="DateOfBirth">Date of Birth</label>
+                                    <input type="date" asp-for="DateOfBirth" class="form-control form-control-lg" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Password -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="Password">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" id="Password" asp-for="Password" class="form-control form-control-lg" placeholder="Enter your password" />
+                                        <button type="button" class="btn btn-outline-secondary" id="passwordToggle" aria-label="Toggle password visibility">
+                                            <i class="bi bi-eye-slash" id="passwordIcon"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                    <label class="form-label" asp-for="ConfirmPassword">Confirm Password</label>
+                                    <div class="input-group">
+                                        <input type="password" id="ConfirmPassword" asp-for="ConfirmPassword" class="form-control form-control-lg" placeholder="Re-enter your password" />
+                                        <button type="button" class="btn btn-outline-secondary" id="confirmPasswordToggle" aria-label="Toggle password visibility">
+                                            <i class="bi bi-eye-slash" id="confirmPasswordIcon"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Signup Button -->
+                        <div class="pt-1 mb-4 text-center">
+                            <button class="btn btn-info btn-lg btn-block w-100" type="submit">Sign up</button>
+                        </div>
+
+                        <p class="text-center">
+                            Already have an account?
+                            <a asp-controller="Login" asp-action="Login" class="link-info">Login here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#passwordToggle").on("click", function (e) {
+            e.preventDefault();
+            var passwordField = $("#Password");
+            var passwordIcon = $("#passwordIcon");
+
+            if (passwordField.attr("type") === "password") {
+                passwordField.attr("type", "text");
+                passwordIcon.removeClass("bi-eye-slash").addClass("bi-eye");
+            } else {
+                passwordField.attr("type", "password");
+                passwordIcon.removeClass("bi-eye").addClass("bi-eye-slash");
+            }
+        });
+
+        $("#confirmPasswordToggle").on("click", function (e) {
+            e.preventDefault();
+            var confirmPasswordField = $("#ConfirmPassword");
+            var confirmPasswordIcon = $("#confirmPasswordIcon");
+
+            if (confirmPasswordField.attr("type") === "password") {
+                confirmPasswordField.attr("type", "text");
+                confirmPasswordIcon.removeClass("bi-eye-slash").addClass("bi-eye");
+            } else {
+                confirmPasswordField.attr("type", "password");
+                confirmPasswordIcon.removeClass("bi-eye").addClass("bi-eye-slash");
+            }
+        });
+    });
+</script>

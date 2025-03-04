@@ -1,0 +1,31 @@
+﻿@model List<Post>
+<style>
+    a.link:hover .post-title {
+        background-color: #B47BD5; 
+        color: white; 
+        transform: scale(1.02); 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+        transition: 0.3s ease-in-out; 
+    }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    <div class="scrollable-container" style="overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+        @foreach (var post in Model)
+        {
+            <a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostID" class="text-decoration-none text-black link">
+                <div class="post-title" style="padding: 5px; border-bottom: 1px solid gray; display: flex; align-items: center; transition: all 0.3s ease;">
+                    @if(post.FeaturedImage != null){
+                        <img src="@post.FeaturedImage" alt="Post Image" style="width: 50px; height: 50px; margin-right: 10px; object-fit: cover;">
+                    }
+                    <h5 style="margin: 0; font-size: 16px; font-weight: bold;">@post.Title</h5>
+                </div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <p class="text-muted" style="padding: 5px 10px">No results found.</p>
+}

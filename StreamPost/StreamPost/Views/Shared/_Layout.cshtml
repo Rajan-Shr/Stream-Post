@@ -1,0 +1,185 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | StreamPost</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StreamPost.styles.css" asp-append-version="true" />
+
+    @* Fonts *@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    @* Bootstrap Icons *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @* JQuery *@
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    @* TinyMCE *@
+    <script src="https://cdn.tiny.cloud/1/@Configuration["TinyMCE:ApiKey"]/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- Add Bootstrap 5 JS Bundle (this includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    @* For DropDown *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    @if (ViewData["ShowHeaderFooter"] == null || (bool)ViewData["ShowHeaderFooter"])
+    {
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-white container">
+                <div class="container-fluid w-100 d-flex justify-content-between align-items-center">
+
+                    @* Left Side: Logo *@
+                    <a class="navbar-brand me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/StreamPostLogo.png" width="50px" /> <span>StreamPost</span>
+                    </a>
+
+                    @* Hamburger Menu Button *@
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    @* Collapsible Menu *@
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto text-uppercase fw-bold" style="font-size:12px">
+                            @foreach (var category in Model.categories)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Category" asp-action="Category" asp-route-id="@category.CategoryID">
+                                        @category.CategoryName
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        @* Search Bar & Logout Inside Hamburger *@
+                        <div class="d-lg-none mt-3">
+                            <form class="d-flex">
+                                <input type="text" id="mobileSearchInput" class="form-control search-form-control" placeholder="Search...." />
+                                <button id="searchBtn" class="btn"><i class="bi bi-search"></i></button>
+                            </form>
+                            <form asp-action="Logout" asp-controller="Login" class="mt-2">
+                                <button class="btn btn-danger w-100">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    @* Right Side: Search & Logout (Visible on Larger Screens) *@
+                    <div class="d-none d-lg-flex align-items-center">   
+                        <form id="searchForm" asp-action="CustomCategory" asp-controller="Category" class="d-flex mx-2 position-relative" method="get">
+                            <input id="desktopSearchInput" name="searchText" type="text" class="form-control search-form-control" placeholder="Search" />
+                            <button id="searchBtn" class="btn"><i class="bi bi-search"></i></button>
+                            <div id="searchResults" class="position-absolute bg-white shadow-sm top-100 start-0 mt-1 z-3" style="width:450px;z-index: 9999"></div>
+                        </form>
+                        <div class="mx-2">
+                            <a asp-action="CreateBlog" asp-controller="CreateBlog" class="btn btn-sm btn-outline-success" style="font-size: 12px">Create</a>
+                        </div>
+                        <div class="mx-2">
+                            <a asp-action="UserProfile" asp-controller="UserProfile">
+                                <img src="https://st2.depositphotos.com/2559749/11304/v/450/depositphotos_113040644-stock-illustration-flat-icon-isolate-on-white.jpg"
+                                     style="border-radius: 50%; width:30px; height:30px; object-fit:cover" />
+                            </a>    
+                        </div>
+                    </div>
+
+                </div>
+            </nav>
+        </header>
+    }
+
+    <div class="container"">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @if (ViewData["ShowHeaderFooter"] == null || (bool)ViewData["ShowHeaderFooter"])
+    {
+        <footer class="container-fluid bg-white text-dark mt-5 pt-4 pb-3 border-top" style="z-index: 1000">
+            <div class="container">
+                <div class="row text-center text-md-start">
+                    <!-- Logo and Branding -->
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                            <img src="/images/StreamPostLogo.png" width="50" class="me-2">
+                            <span class="fs-4 fw-bold">StreamPost</span>
+                        </div>
+                        <p class="mt-2 text-secondary">Your go-to platform for trending news and insights.</p>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <h5 class="fw-bold">Company</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a asp-action="About" asp-controller="Home" class="text-decoration-none text-dark">About</a>
+                            </li>
+                            <li class="mb-2">
+                                <a asp-action="" asp-controller="" class="text-decoration-none text-dark">Contact</a>
+                            </li>
+                            <li class="mb-2">
+                                <a asp-action="" asp-controller="" class="text-decoration-none text-dark">Our Team</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Socials Section -->
+                    <div class="col-md-3 mb-3">
+                        <h5 class="fw-bold">Socials</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="https://www.facebook.com/login.php/" class="text-decoration-none text-dark fb">
+                                    <i class="bi bi-facebook me-2"></i>Facebook
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.instagram.com/accounts/login/?hl=en" class="text-decoration-none text-dark insta">
+                                    <i class="bi bi-instagram me-2"></i>Instagram
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://api.linkedin.com/login" class="text-decoration-none text-dark linkedin">
+                                    <i class="bi bi-linkedin me-2"></i>LinkedIn
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <!-- Legal Section -->
+                    <div class="col-md-3 mb-3">
+                        <h5 class="fw-bold">Legal</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a asp-action="" asp-controller="" class="text-decoration-none text-dark">Privacy Policy</a>
+                            </li>
+                            <li class="mb-2">
+                                <a asp-action="" asp-controller="" class="text-decoration-none text-dark">Terms of Service</a>
+                            </li>
+                            <li class="mb-2">
+                                <a asp-action="" asp-controller="" class="text-decoration-none text-dark">Code of Conduct</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="text-center text-secondary mt-2">
+                    <small>&copy; @DateTime.Now.Year - StreamPost. All Rights Reserved.</small>
+                </div>
+            </div>
+        </footer>
+
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

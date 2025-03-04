@@ -1,0 +1,314 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+<style>
+    .justify
+    {
+        text-align: justify !important;
+    }
+</style>
+<section class="container mt-3">
+    <div class="row g-4">
+        <!-- Latest Post -->
+        @if (Model.latestpost != null)
+        {
+            <div class="col-lg-9 col-md-12">
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@Model.latestpost.PostID" class="text-decoration-none h-100 d-block">
+                    <div class="card text-white border-0 position-relative h-100">
+                        @if (@Model.latestpost.FeaturedImage != null)
+                        {
+                            <img src="@Model.latestpost.FeaturedImage" class="card-img h-100 w-100" alt="Featured Image"
+                                 style="filter: brightness(70%); object-fit: cover;">
+                        }
+                        <div class="card-img-overlay d-flex flex-column justify-content-end"
+                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
+                            <span class="text-uppercase text-light small mb-2 px-2">
+                                <i class="bi bi-tag me-1"></i> @Model.latestpost.Category.CategoryName
+                            </span>
+                            <h3 class="card-title fw-bold px-2 justify" style="color:white;">@Model.latestpost.Title</h3>
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2">
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-person me-1"></i> @Model.latestpost.User.UserName
+                                </small>
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-calendar me-1"></i> @Model.latestpost.PublishedDate
+                                </small>
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-heart me-1"></i> @Model.latestpost.LikeNumber Likes
+                                </small>
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-chat me-1"></i> @Model.latestpost.CommentNumber Comments
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        <!-- Posts Sidebar -->
+        <div class="col-lg-3 col-md-12">
+            <div class="h-100 d-flex flex-column">
+                @if (Model.posts != null)
+                {
+                    @foreach (var post in Model.posts)
+                    {
+                        @if (post != Model.latestpost)
+                        {
+                            <div class="flex-grow-1 mt-3" style="min-height: 0;">
+                                <div class="h-100">
+                                    <p class="mb-2 small" style="color: mediumpurple">
+                                        <i class="bi bi-tag-fill me-1"></i>@post.Category.CategoryName
+                                    </p>
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@post.PostID"
+                                       class="fw-bold text-decoration-none text-black d-block justify">
+                                        @post.Title
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="p-3 bg-light h-100">
+                        <p class="text-muted mb-0">No posts available.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container mt-5">
+    <div class="row">
+        <!-- Left Side: Technology Posts -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Technology</h3>
+                <a asp-action="Category" asp-controller="Category" asp-route-id="1"
+                   class="mb-2 small fw-bold text-decoration-none"
+                   style="color: mediumpurple">
+                    More in Technology <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div>
+                @foreach (var techpost in Model.techPosts)
+                {
+                    <a asp-action="Details" asp-controller="Home" asp-route-id="@techpost.PostID" class="text-decoration-none text-black">
+                        <div class="card mb-3 d-flex flex-row">
+                            <div class="flex-shrink-0">
+                                <img src="@techpost.FeaturedImage" class="img-fluid rounded-start" alt="..."
+                                     style="height: 12em; width:20em; object-fit: cover;">
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title mb-3 lh-base">@techpost.Title</h5>
+                                <div class="d-flex flex-wrap align-items-center gap-2 mt-auto">
+                                    <small class="badge text-dark">
+                                        <i class="bi bi-person me-1"></i> @techpost.User.UserName
+                                    </small>
+                                    <small class="badge text-dark">
+                                        <i class="bi bi-calendar me-1"></i> @techpost.PublishedDate
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Right Side: Additional Image -->
+        <div class="col-md-3 d-flex align-items-center justify-content-center">
+            <img src="~/images/Blogger.png" class="img-fluid rounded" alt="Technology Section"
+                 style="max-width: 100%; height: auto; object-fit: cover;">
+        </div>
+    </div>
+</section>
+
+<section class="container mt-5">
+    <div style="width:100%;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>Most Popular</h3>
+        </div>
+        <div class="d-flex">
+            @foreach (var mostLikes in Model.mostLikesPosts)
+            {
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@mostLikes.PostID" class="text-decoration-none h-100 d-block  col-md-6" style="height: 400px !important;">
+                    <div class="card text-white border-0 position-relative h-100" style="">
+                        @if (@Model.latestpost.FeaturedImage != null)
+                        {
+                            <img src="@mostLikes.FeaturedImage" class="card-img h-100 w-100" alt="Featured Image"
+                                 style="filter: brightness(70%); object-fit: cover;">
+                        }
+                        <div class="card-img-overlay d-flex flex-column justify-content-end"
+                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
+                            <span class="text-uppercase text-light small mb-2 px-2">
+                                <i class="bi bi-tag me-1"></i> @mostLikes.Category.CategoryName
+                            </span>
+                            <h3 class="card-title fw-bold px-2 justify" style="color:white;">@mostLikes.Title</h3>
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2">
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-person me-1"></i> @mostLikes.User.UserName
+                                </small>
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-calendar me-1"></i> @mostLikes.PublishedDate
+                                </small>
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-heart me-1"></i> @mostLikes.LikeNumber Likes
+                                </small>
+                                <small class="text-light badge bg-opacity-50 bg-dark">
+                                    <i class="bi bi-chat-dots me-1"></i> @mostLikes.CommentNumber Comments
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+
+<section class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Politics</h3>
+        <a asp-action="Category" asp-controller="Category" asp-route-id=4 class="mb-2 small fw-bold text-decoration-none" style="color: mediumpurple">More in Politics <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row">
+        @foreach (var posts in Model.politicsPosts)
+    {
+            <div class="col-md-4">
+                <a asp-action="Details" asp-controller="Home" asp-route-id="@posts.PostID" class="text-black text-decoration-none">
+                    <div class="card" style="width: 25em;">
+                        <img class="card-img-top" src="@posts.FeaturedImage" alt="Card image cap" style="height:15em;object-fit:cover">
+                        <div class="card-body d-flex flex-column" style="height: 10em;">
+                            <h5 class="card-text justify">@posts.Title</h5>
+
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2 mt-auto">
+                                <small class="me-3">
+                                    <i class="bi bi-person me-1"></i> @posts.User.UserName
+                                </small>
+                                <small>
+                                    <i class="bi bi-calendar me-1"></i> @posts.PublishedDate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+    }
+    </div>
+</section>
+
+
+<section class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Entertainment</h3>
+                <a asp-action ="Category" asp-controller="Category" asp-route-id=2 class="mb-2 small fw-bold text-decoration-none" style="color: mediumpurple">More in Entertainment <i class="bi bi-arrow-right"></i></a>
+            </div>
+            @foreach (var posts in Model.entertainmentPosts)
+            {
+                <a asp-action="Details" asp-controller="Home" asp-route-id="@posts.PostID" class="text-black text-decoration-none">
+                    <div class="card" style="width: 40em;">
+                        <img class="card-img-top" src="@posts.FeaturedImage" alt="Card image cap" style="height:25em;object-fit:cover">
+                        <div class="card-body" style="height: 7em; display: flex; flex-direction: column; justify-content: space-between;">
+                            <h5 class="card-text justify">@posts.Title</h5>
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2 mt-auto">
+                                <small>
+                                    <i class="bi bi-person me-1"></i> @posts.User.UserName
+                                </small>
+                                <small>
+                                    <i class="bi bi-calendar me-1"></i> @posts.PublishedDate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Sports</h3>
+                <a asp-action="Category" asp-controller="Category" asp-route-id=3 class="mb-2 small fw-bold text-decoration-none" style="color: mediumpurple">More in Sports <i class="bi bi-arrow-right"></i></a>
+            </div>
+            @foreach (var posts in Model.sportsPosts)
+            {
+                <a asp-action="Details" asp-controller="Home" asp-route-id="@posts.PostID" class="text-black text-decoration-none">
+                    <div class="card" style="width: 40em;">
+                        <img class="card-img-top" src="@posts.FeaturedImage" alt="Card image cap" style="height:25em;object-fit:cover">
+                        <div class="card-body" style="height: 7em; display: flex; flex-direction: column; justify-content: space-between;">
+                            <h5 class="card-text justify">@posts.Title</h5>
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2 mt-auto">
+                                <small>
+                                    <i class="bi bi-person me-1"></i> @posts.User.UserName
+                                </small>
+                                <small>
+                                    <i class="bi bi-calendar me-1"></i> @posts.PublishedDate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Social</h3>
+                <a asp-action="Category" asp-controller="Category" asp-route-id=5 class="mb-2 small fw-bold text-decoration-none" style="color: mediumpurple">More in Social <i class="bi bi-arrow-right"></i></a>
+            </div>
+        @foreach (var posts in Model.socialPosts)
+        {
+                <a asp-action="Details" asp-controller="Home" asp-route-id="@posts.PostID" class="text-black text-decoration-none">
+                    <div class="card" style="width: 40em;">
+                        <img class="card-img-top" src="@posts.FeaturedImage" alt="Card image cap" style="height:25em;object-fit:cover">
+                        <div class="card-body" style="height: 7em; display: flex; flex-direction: column; justify-content: space-between;">
+                            <h5 class="card-text justify">@posts.Title</h5>
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2 mt-auto">
+                                <small>
+                                    <i class="bi bi-person me-1"></i> @posts.User.UserName
+                                </small>
+                                <small>
+                                    <i class="bi bi-calendar me-1"></i> @posts.PublishedDate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+        }
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Health</h3>
+                <a asp-action="Category" asp-controller="Category" asp-route-id="6" class="mb-2 small fw-bold text-decoration-none" style="color: mediumpurple">More in Health <i class="bi bi-arrow-right"></i></a>
+            </div>
+
+            @foreach (var posts in Model.healthPosts)
+            {
+                <a asp-action="Details" asp-controller="Home" asp-route-id="@posts.PostID" class="text-black text-decoration-none">
+                    <div class="card" style="width: 40em;">
+                        
+                            <img class="card-img-top" src="@posts.FeaturedImage" alt="Card image cap" style="height:25em;object-fit:cover">
+                      
+                        <div class="card-body" style="height: 7em; display: flex; flex-direction: column; justify-content: space-between;">
+                            <h5 class="card-text justify">@posts.Title</h5>
+                            <div class="d-flex flex-wrap align-items-center gap-2 px-2 pb-2 mt-auto">
+                                <small>
+                                    <i class="bi bi-person me-1"></i> @posts.User.UserName
+                                </small>
+                                <small>
+                                    <i class="bi bi-calendar me-1"></i> @posts.PublishedDate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>

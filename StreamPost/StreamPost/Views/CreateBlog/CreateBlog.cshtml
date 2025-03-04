@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Add Your Blog Post";
+}
+
+<!-- Cropper.js CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4 rounded">
+                <form asp-controller="CreateBlog" asp-action="CreateBlog" method="post">
+                    <div class="mb-3">
+                        <label for="Title" class="form-label fw-bold">Title</label>
+                        <input type="text" id="Title" name="Title" class="form-control" placeholder="Enter your blog title" required>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <div class="mb-3">
+                            <label for="FeaturedImagePicker" class="form-label fw-bold">Featured Image</label>
+                            <input type="file" id="FeaturedImagePicker" class="form-control" accept=".jpg, .jpeg, .png">
+                        </div>
+                        <div class="mb-3">
+                            <img id="previewImage" src="" style="max-width: 100%; display: none;">
+                        </div>
+
+                        <div>
+                            <img id="croppedPreview" src="" style="max-width: 100%;">
+                        </div>
+                        <div>
+                            <div id="cropButton" class="btn btn-primary">Crop</div>
+                            <div id="rotateButton" class="btn btn-secondary">Rotate</div>
+                        </div>
+                    </div>
+
+                    <input type="text" id="FeaturedImage" name="FeaturedImage" style="display:none;" value="" />
+
+                    <div class="mb-3">
+                        <label for="Content" class="form-label fw-bold">Content</label>
+                        <textarea id="Content" name="Content" class="form-control"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Category" class="form-label fw-bold">Category</label>
+                        <div class="d-flex gap-2">
+                            @foreach (var category in Model.categories)
+                            {
+                                <input type="radio" value="@category.CategoryID" name="Category" /> @category.CategoryName
+                            }
+                        </div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">🚀 Publish Blog</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cropper.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script src="~/js/CreateBlog.js"></script>

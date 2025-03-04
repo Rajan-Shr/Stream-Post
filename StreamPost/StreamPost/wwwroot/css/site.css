@@ -1,0 +1,73 @@
+* {
+    font-family: "Poppins", serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+*::selection
+{
+    color: mediumpurple;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+
+.navbar .nav-item .nav-link {
+    transition: all 0.2s ease-in-out;
+}
+
+.navbar .nav-item .nav-link:hover {
+        color: mediumpurple !important;
+}
+
+.search-form-control {
+    font-size: 12px;
+    box-shadow: none !important;
+    border-color: gray !important;
+    border-right: 0px !important;
+    border-radius: 0px !important;
+    border-top-left-radius: 12px !important;
+    border-bottom-left-radius: 12px !important;
+}
+
+#searchBtn {
+    border-color: gray !important;
+    border-left: 0px !important;
+    border-radius: 0px !important;
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+}
+
+.btn {
+    box-shadow: none !important;
+}
+
+footer ul li a:hover {
+    color: mediumpurple !important;
+}
+
+.fb:hover, .fb:hover i {
+    color: #4267B2 !important;
+}
+
+/* Instagram Hover with Gradient */
+.insta:hover, .insta:hover i {
+    background: linear-gradient(45deg, #F9CE34, #EE2A7B, #6228D7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.linkedin:hover, .linkedin:hover i {
+    color: #0A66C2 !important;
+}

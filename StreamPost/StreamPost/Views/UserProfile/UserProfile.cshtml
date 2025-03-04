@@ -1,0 +1,210 @@
+﻿@{
+    ViewData["Title"] = @Model.user.UserName;
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+    .profile-container {
+         /* position: relative;  */
+        /* min-height: 100vh; */
+         /* overflow-x: hidden;  */
+    }
+
+    .left-column {
+        position: fixed;
+        width: 30%; 
+        max-width: 400px;
+    }
+
+    .right-column {
+        margin-left: 30%;
+        width: 70%;
+    }
+
+    @@media (max-width: 767px) {
+        .left-column
+        {
+            position: relative;
+            width: 100%;
+        }
+
+        .right-column {
+            margin-left: 0;
+        }
+    }
+</style>
+
+<section>
+    <div class="profile-container mt-3">
+        <div class="row">
+            <div class="left-column">
+                <div class="mb-4 text-center ">
+                    <img src="https://st2.depositphotos.com/2559749/11304/v/450/depositphotos_113040644-stock-illustration-flat-icon-isolate-on-white.jpg"
+                         class="img-fluid rounded-circle border-0 p-2" alt="Profile image" style="object-fit: cover; width: 150px; height: 150px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);" />
+                    <div class="info-item mt-2">
+                        <span class="font-weight-bold text-muted"></span> <span>@Model.user.UserName</span>
+                    </div>
+                </div>
+
+                <!-- User Information Section -->
+                <div class="user-info">
+                    <div class="info-item mb-3">
+                        <span class="font-weight-bold text-muted">Email:</span> <span>@Model.user.Email</span>
+                    </div>
+                    
+                    <div class="info-item mb-3">
+                        <span class="font-weight-bold text-muted">Phone:</span> <span>@Model.user.PhoneNumber</span>
+                    </div>
+                    <div class="info-item mb-3">
+                        <span class="font-weight-bold text-muted">Date of Birth:</span> <span>@Model.user.DateOfBirth</span>
+                    </div>
+                    <div class="info-item mb-3">
+                        <span class="font-weight-bold text-muted">Gender:</span> <span>@Model.user.Gender</span>
+                    </div>
+                </div>
+
+                <!-- Logout Button -->
+                <div class="text-center">
+                    <button type="button" class="btn btn-outline-dark btn-sm py-2 px-4" style="font-size: 12px;width: 49%;" data-bs-toggle="modal" data-bs-target="#editDetails">
+                        <i class="fas fa-edit" style="font-size: 18px;"></i> Edit Details
+                    </button>
+                    <button type="button" class="btn btn-outline-info btn-sm py-2 px-4" style="font-size: 12px;width: 49%;" data-bs-toggle="modal" data-bs-target="#editPasswordModal">
+                        <i class="fas fa-edit" style="font-size: 18px;"></i> Change password
+                    </button>
+                    <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-danger btn-sm py-2 px-4 mt-2" style="font-size: 12px; width: 100%;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <div class="right-column">
+                @if (Model.userPosts.Count != 0)
+                {
+                    @foreach (var post in Model.userPosts)
+                    {
+                        <a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostID" class="text-decoration-none text-black">
+                            <div class="card mb-3 d-flex flex-row">
+                                <div class="flex-shrink-0">
+                                    @if (post.FeaturedImage != null)
+                                    {
+                                        <img src="@post.FeaturedImage" class="img-fluid rounded-start" alt="..." style="height: 12em; width:20em; object-fit: cover;">
+                                    }
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-3">@post.Title</h5>
+                                    <div class="d-flex flex-wrap align-items-center gap-2 mt-auto">
+                                        <small class="badge text-dark">
+                                            <i class="bi bi-calendar me-1"></i> @post.PublishedDate
+                                        </small>
+                                        <small class="badge text-dark">
+                                            <i class="bi bi-heart me-1"></i> @post.LikeNumber Likes
+                                        </small>
+                                        <small class="badge text-dark">
+                                            <i class="bi bi-chat me-1"></i> @post.CommentNumber Comments
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </a>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted text-center">No posts available</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="editDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Your Information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UpdateUserProfile" asp-controller="UserProfile" method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="UserName" value="@Model.user.UserName" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="Email" name="Email" value="@Model.user.Email" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="PhoneNumber" value="@Model.user.PhoneNumber" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="DateOfBirth" value="@Model.user.DateOfBirth" />
+                    </div>
+                    <div class="">
+                        <button type="submit" class="btn btn-success">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Your Information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UpdateUserPassword" asp-controller="UserProfile" method="post">
+                    <div class="mb-3">
+                        <label for="CurrentPassword" class="form-label">Current Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" required />
+                            <button type="button" class="btn btn-outline-secondary" id="toggleCurrentPassword" onclick="togglePasswordVisibility('CurrentPassword')"><i class="bi bi-eye-slash"></i></button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="NewPassword" class="form-label">New Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="NewPassword" name="NewPassword" required/>
+                            <button type="button" class="btn btn-outline-secondary" id="toggleNewPassword" onclick="togglePasswordVisibility('NewPassword')"><i class="bi bi-eye-slash"></i></button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ConfirmNewPassword" class="form-label">Confirm New Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="ConfirmNewPassword" name="ConfirmNewPassword" required />
+                            <button type="button" class="btn btn-outline-secondary" id="toggleConfirmPassword" onclick="togglePasswordVisibility('ConfirmNewPassword')"><i class="bi bi-eye-slash"></i></button>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button type="submit" class="btn btn-success">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility(passwordFieldId) {
+        const passwordField = document.getElementById(passwordFieldId);
+        const button = document.getElementById('toggle' + passwordFieldId);
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            button.innerHTML = '<i class="bi bi-eye"></i>';
+        } else {
+            passwordField.type = 'password';
+            button.innerHTML = '<i class="bi bi-eye-slash"></i>';
+        }
+    }
+</script>

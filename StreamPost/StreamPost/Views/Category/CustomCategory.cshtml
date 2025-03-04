@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Search Results";
+}
+
+<style>
+    .purple:hover {
+        color: mediumpurple !important;
+    }
+</style>
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h3 class="fw-bold text-uppercase mb-3">Filtered Results</h3>
+
+            @if (Model.posts.Count == 0)  
+            {
+                <p class="text-muted">No results found for your filter criteria.</p>
+            }
+            else
+            {
+                @foreach (var post in Model.posts)
+                {
+                    <a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostID" class="text-decoration-none text-black">
+                        <div class="card mb-3 d-flex flex-row">
+                            @if(post.FeaturedImage != null)
+                            {
+                                <div class="flex-shrink-0">
+                                    <img src="@post.FeaturedImage" class="img-fluid rounded-start" alt="..." style="height: 12em; width:20em; object-fit: cover;">
+                                </div>
+                            }
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title mb-3">@post.Title</h5>
+                                <div class="d-flex flex-wrap align-items-center gap-2 mt-auto">
+                                    <small class="badge text-dark">
+                                        <i class="bi bi-person me-1"></i> @post.User.UserName
+                                    </small>
+                                    <small class="badge text-dark">
+                                        <i class="bi bi-calendar me-1"></i> @post.PublishedDate
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+        <div class="col-md-4">
+            <h3 class="mb-3 text-uppercase fw-bold " style="color: mediumpurple;">Categories</h3>
+            <ul class="list-unstyled">
+                @foreach (var category in Model.categories)
+                {
+                    <li class="mb-2">
+                        <a asp-action="Category" asp-controller="Category" asp-route-id="@category.CategoryID"
+                           class="text-decoration-none text-black d-flex align-items-center gap-2 p-2 purple">
+                            <i class="bi bi-tag me-2" style="font-size: 18px; color: mediumpurple;"></i>
+                            @category.CategoryName
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
